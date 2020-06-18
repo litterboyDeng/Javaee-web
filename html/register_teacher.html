@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>教师注册</title>
+  <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
+  <script>
+    function register() {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/teacher/register",
+            contentType: "application/json",
+            dataType:"json",
+            data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#pass').val(),
+                name: $('#name').val(),
+                teacherID: $('#teacher_id').val()
+            }),
+            success: function(result){
+                alert(result.msg)
+            },
+            error: function(result){
+
+            }
+        })
+    }
+  </script>
+
+</head>
+<body>
+工号：<input type="text" id="teacher_id"><br/>
+密码：<input type="password" id="pass"><br/>
+昵称：<input type="text" id="username"><br/>
+姓名：<input type="text" id="name"><br/><br/>
+
+<button onclick="register()">注册</button>
+</body>
+</html>

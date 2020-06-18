@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>作业管理系统</title>
+  <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+  <style>
+    #lists li{
+      padding-left:30px;
+      padding-right: 30px;
+      display: flex;
+      justify-content: normal;
+    }
+  </style>
+  <script>
+    let id = window.location.search.substr(4)
+    console.log(id)
+    getHomework()
+    function getHomework() {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/teacher/getAllHomework",
+            contentType: "application/json",
+            dataType:"json",
+            data: JSON.stringify({
+            }),
+            success: function(result){
+                console.log(result)
+                show(result.data)
+            },
+            error: function(result){
+
+            }
+        })
+    }
+
+    function show(data) {
+        let lists = document.getElementById("lists");
+        $('#lists li').remove()
+        $('#lists hr').remove()
+        let li = document.createElement("li");
+        li.innerHTML= "      <div style=\"width: 10%\">编号</div>" +
+            "      <div style=\"width: 50%\">title</div>" +
+            "      <div style=\"width: 40%\">时间</div>"
+        lists.appendChild(li);
+
+        lists.style.textAlign="left";
+        lists.style.color = "black";
+        // lists.style.height = "auto";
+
+        if (data.length === 0){
+            lists.innerHTML = "<br/>没有作业!";
+            lists.style.textAlign="center";
+            lists.style.color = "red";
+        }
+
+        for (let i=1; i<=data.length;i++) {
+            let element = data[i-1];
+            let li = document.createElement("li");
+            li.innerHTML="<div style=\"width: 10%\">" +
+                i +
+                "</div> <div style=\"width: 50%\"> <a href='./html/submit.html?"
+                + element.id + "&" + id + "' target='_blank'>" + element.title +
+                "</a > </div > <div style=\"width:40%\">" +
+                element.createTime +
+                "</div>"
+
+            let hr = document.createElement("hr")
+            lists.appendChild(hr);
+
+            lists.appendChild(li);
+        }
+    }
+  </script>
+</head>
+<body>
+<div id="show-homework">
+  <ul id="lists" style="list-style-type: none">
+
+  </ul>
+</div>
+</div>
+</body>
+</html>
